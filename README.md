@@ -1,1 +1,2 @@
 # The-Wolf-Curse-Game
+Welcome to "The Wolf Curse" a game of chance and daring. Test your luck by entering an amount and watch as the fields cycle through. Will you double your bet, multiply it by five, multiply it by ten, win a trip to the Maldives, or face the Wolf Curse that resets your winnings to zero? Click "Start" to play and "Stop" to secure your earnings. Can you conquer the curse and come out on top? Dive into the excitement of "Wolf Curse" now!

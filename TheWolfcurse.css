@@ -1,0 +1,42 @@
+body {
+    background-color: pink;
+}
+#welcome {
+color:indigo;
+}
+.game-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    max-width: 600px; 
+}
+
+.cell {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    height: 150px;
+}
+
+
+.cell img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.logo-cell {
+    background-color: #ffffff;
+    color: b;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+}
