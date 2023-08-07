@@ -32,6 +32,11 @@ $(document).ready(function() {
         return Math.floor(Math.random() * 9);
     }
 
+    function updateAmount(change) {
+        amount += change;
+        $('#yourMoney').text(`Your Money: ${amount}`);
+    }
+    
     function startGame() {
         if (!gameStarted) {
             var amount = parseInt($('#amountInput').val());
@@ -66,7 +71,7 @@ $(document).ready(function() {
         gameStarted = false;
     }
 
-    
+    // Button click events
     $('#startButton').on('click', function() {
         startGame();
     });
