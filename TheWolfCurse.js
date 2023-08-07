@@ -2,6 +2,7 @@ $(document).ready(function() {
     var interval = null;
     var gameStarted = false;
     var highlightedCellIndex = null;
+    var amount = 0; 
 
     function highlightCell(index) {
         $('.cell').eq(index).addClass('highlighted');
@@ -33,14 +34,15 @@ $(document).ready(function() {
     }
 
     function updateAmount(change) {
-        amount += change;
-        $('#yourMoney').text(`Your Money: ${amount}`);
+        amount = change;
+        $('#yourMoney').text('Your Current Ammount: ' + amount + ' $');
     }
-    
+
     function startGame() {
         if (!gameStarted) {
-            var amount = parseInt($('#amountInput').val());
-            if (amount >= 10) {
+            var enteredAmount = parseInt($('#amountInput').val());
+            if (enteredAmount >= 10) {
+                amount = enteredAmount;
                 gameStarted = true;
                 highlightedCellIndex = getRandomCellIndex();
                 interval = setInterval(function() {
@@ -53,6 +55,7 @@ $(document).ready(function() {
 
                 $('#startButton').prop('disabled', true);
                 $('#stopButton').prop('disabled', false);
+                $('#yourMoney').text('Your Current Ammount: ' + amount + ' $');
             } else {
                 alert('Please enter an amount equal to or greater than 10 to start the game.');
             }
@@ -64,14 +67,31 @@ $(document).ready(function() {
         unhighlightCell(highlightedCellIndex);
         enlargeCell(highlightedCellIndex);
         var cell = $('.cell').eq(highlightedCellIndex);
-        $('#resultat').text(cell.text());
+        var lastBoxImg = cell.find('img').attr('src');
+
+        if (lastBoxImg === 'TWC images/2.jpg') {
+            updateAmount(amount * 2);
+        } else if (lastBoxImg === 'TWC images/téléchargement (1).jpg') {
+            updateAmount(amount / 2);
+        } else if (lastBoxImg === 'TWC images/5.jpg') {
+            updateAmount(amount * 5);
+        } else if (lastBoxImg === 'TWC images/téléchargement (1).jpg') {
+            updateAmount(amount / 2);
+        } else if (lastBoxImg === 'TWC images/logo.jpeg') {
+            amount = 0;
+            $('#resultat').text("You were cursed hahah");
+            $('#yourMoney').text('Your Current Ammount: ' + amount + ' $');
+        } else if (lastBoxImg === 'TWC images/5.jpeg') {
+            updateAmount(amount - 5);
+        } else if (lastBoxImg === 'TWC images/10.png') {
+            updateAmount(amount * 10);
+        }
 
         $('#startButton').prop('disabled', false);
         $('#stopButton').prop('disabled', true);
         gameStarted = false;
     }
 
-    // Button click events
     $('#startButton').on('click', function() {
         startGame();
     });
