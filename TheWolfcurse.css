@@ -54,3 +54,10 @@ color:indigo;
     font-size: 18px;
     font-weight: bold;
 }
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+.controls button {
+    margin: 5px;
+}

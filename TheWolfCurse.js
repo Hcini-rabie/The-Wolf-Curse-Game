@@ -2,7 +2,7 @@ $(document).ready(function() {
     var interval = null;
     var gameStarted = false;
     var highlightedCellIndex = null;
-    var amount = 0; 
+    var amount = 0;
 
     function highlightCell(index) {
         $('.cell').eq(index).addClass('highlighted');
@@ -36,6 +36,9 @@ $(document).ready(function() {
     function updateAmount(change) {
         amount = change;
         $('#yourMoney').text('Your Current Amount: ' + amount + ' $');
+        if (amount <= 0) {
+            $('#spinButton').prop('disabled', true);
+        }
     }
 
     function startGame() {
@@ -51,6 +54,7 @@ $(document).ready(function() {
             }, 200);
 
             $('#startButton').prop('disabled', true);
+            $('#spinButton').prop('disabled', true);
             $('#stopButton').prop('disabled', false);
         }
     }
@@ -59,36 +63,48 @@ $(document).ready(function() {
         clearInterval(interval);
         unhighlightCell(highlightedCellIndex);
         enlargeCell(highlightedCellIndex);
-        var cell = $('.cell').eq(highlightedCellIndex);
-        var lastBoxImg = cell.find('img').attr('src');
-    
+
+        var lastBoxImg = $('.cell').eq(highlightedCellIndex).find('img').attr('src');
+
         if (lastBoxImg === 'TWC images/2.jpg') {
             updateAmount(amount * 2);
+            $('#resultat').text("Great you Doubled Your Money");
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $')
         } else if (lastBoxImg === 'TWC images/téléchargement (1).jpg') {
             updateAmount(amount / 2);
+            $('#resultat').text("Oops The Wolf Took Half Of Your Money");
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $')
         } else if (lastBoxImg === 'TWC images/5.jpg') {
             updateAmount(amount * 5);
-        } else if (lastBoxImg === 'TWC images/téléchargement (1).jpg') {
-            updateAmount(amount / 2);
+            $('#resultat').text("Great you Increased Your Money Five times");
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $')
         } else if (lastBoxImg === 'TWC images/logo.jpeg') {
             amount = 0;
-            $('#resultat').text("You were cursed hahah");
+            $('#resultat').text("You Have Been Cursed By The Wolf hahah");
             $('#yourMoney').text('Your Current Amount: ' + amount + ' $');
         } else if (lastBoxImg === 'TWC images/5.jpeg') {
             updateAmount(amount - 5);
+            $('#resultat').text("Oops The Wolf Took 5$ Of Your Money");
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $')
         } else if (lastBoxImg === 'TWC images/10.png') {
             updateAmount(amount * 10);
+            $('#resultat').text("You Increased Your Money Ten times");
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $')
         }
-    
+
         if (amount <= 0) {
             clearInterval(interval);
             gameStarted = false;
             $('#resultat').text("Game Over - You were cursed hahah");
             $('#startButton').prop('disabled', true);
+            $('#spinButton').prop('disabled', true);
             $('#stopButton').prop('disabled', true);
+            $('#withdrawButton').prop('disabled', true);
         } else {
             $('#startButton').prop('disabled', false);
-            $('#stopButton').prop('disabled', true); 
+            $('#spinButton').prop('disabled', false);
+            $('#stopButton').prop('disabled', true);
+            $('#withdrawButton').prop('disabled', false);
         }
     }
 
@@ -102,10 +118,43 @@ $(document).ready(function() {
             } else {
                 alert('Please enter an amount equal to or greater than 10 to start the game.');
             }
+        } else {
+            startGame();
         }
     });
 
     $('#stopButton').on('click', function() {
         stopGame();
+    });
+
+    $('#spinButton').on('click', function() {
+        if (gameStarted && amount > 0) {
+            unhighlightCell(highlightedCellIndex);
+            shrinkCell(highlightedCellIndex);
+            highlightedCellIndex = getRandomCellIndex();
+            interval = setInterval(function() {
+                unhighlightCell(highlightedCellIndex);
+                shrinkCell(highlightedCellIndex);
+                highlightedCellIndex = getRandomCellIndex();
+                highlightCell(highlightedCellIndex);
+                enlargeCell(highlightedCellIndex);
+            }, 200);
+            $('#spinButton').prop('disabled', true);
+            $('#stopButton').prop('disabled', false);
+        }
+    });
+
+    $('#withdrawButton').on('click', function() {
+        if (gameStarted) {
+            $('#resultat').text("You have withdrawn " + amount + " $. Thanks for playing!");
+            amount = 0;
+            $('#yourMoney').text('Your Current Amount: ' + amount + ' $');
+            clearInterval(interval);
+            gameStarted = false;
+            $('#startButton').prop('disabled', false);
+            $('#spinButton').prop('disabled', true);
+            $('#stopButton').prop('disabled', true);
+            $('#withdrawButton').prop('disabled', true);
+        }
     });
 });
